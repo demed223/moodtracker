@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import { useState, useEffect } from "react";
 import { db } from "../lib/firebase";
@@ -6,6 +6,8 @@ import {
   collection,
   addDoc,
   getDocs,
+  deleteDoc,
+  doc,
   query,
   orderBy,
   serverTimestamp,
@@ -36,6 +38,12 @@ export default function Home() {
     fetchMoods();
   }
 
+  async function removeMood(id) {
+    const docRef = doc(db, "moods", id);
+    await deleteDoc(docRef);
+    fetchMoods();
+  }
+
   return (
     <div style={{ padding: "2rem", maxWidth: "600px", margin: "0 auto" }}>
       <h1 style={{ textAlign: "center" }}>Mood Tracker</h1>
@@ -63,9 +71,24 @@ export default function Home() {
               border: "1px solid #ccc",
               padding: "0.5rem",
               marginBottom: "0.5rem",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
             <span>{e.mood} — {e.note || "No note"}</span>
+            <button
+              onClick={() => removeMood(e.id)}
+              style={{
+                background: "red",
+                color: "white",
+                border: "none",
+                padding: "0.25rem 0.5rem",
+                cursor: "pointer",
+              }}
+            >
+              Remove
+            </button>
           </li>
         ))}
       </ul>
