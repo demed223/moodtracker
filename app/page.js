@@ -18,7 +18,6 @@ export default function Home() {
   const [note, setNote] = useState("");
   const [entries, setEntries] = useState([]);
 
-  // Fetch moods from Firestore on load
   useEffect(() => {
     fetchMoods();
   }, []);
